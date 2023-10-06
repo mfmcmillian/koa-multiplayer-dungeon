@@ -40,6 +40,8 @@ export function buildStartingArea() {
 export function buildDungeon() {
   let entity = engine.addEntity()
   let entity2 = engine.addEntity()
+  let entity3 = engine.addEntity()
+  let entity4 = engine.addEntity()
 
   GltfContainer.create(entity, {
     src: 'models/Dungeon.glb'
@@ -49,202 +51,119 @@ export function buildDungeon() {
     src: 'models/Dungeon_collider.glb'
   })
 
-  Transform.create(entity, {
-    position: Vector3.create(16, 50, 16),
-    rotation: Quaternion.create(0, -1, 0, 1),
-    scale: Vector3.create(1, 1, 1)
-  })
-
-  Transform.create(entity2, {
-    parent: entity
-  })
-}
-
-export function buildDungeonDpors() {
-  let entity = engine.addEntity()
-  let entity2 = engine.addEntity()
-  let entity3 = engine.addEntity()
-  let entity4 = engine.addEntity()
-  let entity5 = engine.addEntity()
-
-  GltfContainer.create(entity, {
-    src: 'models/Dungeon_Door1.glb'
-  })
-  GltfContainer.create(entity2, {
-    src: 'models/Dungeon_Door2.glb'
-  })
   GltfContainer.create(entity3, {
-    src: 'models/Dungeon_Door3.glb'
+    src: 'models/DungeonProps1.glb'
   })
+
   GltfContainer.create(entity4, {
-    src: 'models/Dungeon_Door4.glb'
+    src: 'models/Dungeon_Platforms.glb'
   })
-  GltfContainer.create(entity5, {
-    src: 'models/Dungeon_Door5.glb'
-  })
+
   Transform.create(entity, {
     position: Vector3.create(16, 50, 16),
     rotation: Quaternion.create(0, -1, 0, 1),
     scale: Vector3.create(1, 1, 1)
   })
+
   Transform.create(entity2, {
     parent: entity
   })
+
   Transform.create(entity3, {
     parent: entity
   })
+
   Transform.create(entity4, {
     parent: entity
   })
-  Transform.create(entity5, {
-    parent: entity
+
+  Animator.create(entity4, {
+    states: [{ clip: 'action', playing: true, loop: true }]
+  })
+}
+
+export function buildDungeonDoors() {
+  const doorModels = [
+    'models/Dungeon_Door1.glb',
+    'models/Dungeon_Door2.glb',
+    'models/Dungeon_Door5.glb',
+    'models/Dungeon_Door4.glb',
+    'models/Dungeon_Door3.glb'
+  ]
+
+  doorModels.forEach((model, index) => {
+    if (index === 4) {
+      // 0-based index, so 4 refers to the 5th door
+      createBossDoorEntity(model, `Dungeon Door ${index + 1}`)
+    } else {
+      createDoorEntity(model, `Dungeon Door ${index + 1}`)
+    }
+  })
+}
+
+function createDoorEntity(modelSrc: string, hoverText: string) {
+  const entity = engine.addEntity()
+
+  GltfContainer.create(entity, {
+    src: modelSrc
+  })
+
+  Transform.create(entity, {
+    position: Vector3.create(16, 50, 16),
+    rotation: Quaternion.create(0, -1, 0, 1),
+    scale: Vector3.create(1, 1, 1)
   })
 
   Animator.create(entity, {
     states: [
-      {
-        clip: 'open',
-        playing: false,
-        loop: false
-      },
-      {
-        clip: 'close',
-        playing: false,
-        loop: false
-      },
-      {
-        clip: 'idle',
-        playing: true,
-        loop: false
-      }
-    ]
-  })
-  Animator.create(entity2, {
-    states: [
-      {
-        clip: 'open',
-        playing: false,
-        loop: false
-      },
-      {
-        clip: 'close',
-        playing: false,
-        loop: false
-      },
-      {
-        clip: 'idle',
-        playing: true,
-        loop: false
-      }
-    ]
-  })
-  Animator.create(entity3, {
-    states: [
-      {
-        clip: 'open',
-        playing: false,
-        loop: false
-      },
-      {
-        clip: 'close',
-        playing: false,
-        loop: false
-      },
-      {
-        clip: 'idle',
-        playing: true,
-        loop: false
-      }
-    ]
-  })
-  Animator.create(entity4, {
-    states: [
-      {
-        clip: 'open',
-        playing: false,
-        loop: false
-      },
-      {
-        clip: 'close',
-        playing: false,
-        loop: false
-      },
-      {
-        clip: 'idle',
-        playing: true,
-        loop: false
-      }
-    ]
-  })
-  Animator.create(entity5, {
-    states: [
-      {
-        clip: 'open',
-        playing: false,
-        loop: false
-      },
-      {
-        clip: 'close',
-        playing: false,
-        loop: false
-      },
-      {
-        clip: 'idle',
-        playing: true,
-        loop: false
-      }
+      { clip: 'open', playing: false, loop: false },
+      { clip: 'close', playing: false, loop: false },
+      { clip: 'idle', playing: true, loop: false }
     ]
   })
 
   pointerEventsSystem.onPointerDown(
     {
       entity: entity,
-      opts: { button: InputAction.IA_POINTER, hoverText: 'Dungeon Door1' }
+      opts: { button: InputAction.IA_POINTER, hoverText: hoverText }
     },
     function () {
-      console.log('Open dungeon door 1')
+      console.log(`Open ${hoverText}`)
       Animator.playSingleAnimation(entity, 'open')
     }
   )
+}
 
+function createBossDoorEntity(modelSrc: string, hoverText: string) {
+  const entity = engine.addEntity()
+
+  GltfContainer.create(entity, {
+    src: modelSrc
+  })
+
+  Transform.create(entity, {
+    position: Vector3.create(16, 50, 16),
+    rotation: Quaternion.create(0, -1, 0, 1),
+    scale: Vector3.create(1, 1, 1)
+  })
+
+  Animator.create(entity, {
+    states: [
+      { clip: 'open', playing: false, loop: false },
+      { clip: 'close', playing: false, loop: false },
+      { clip: 'idle', playing: true, loop: false }
+    ]
+  })
+
+  // Different behavior for Door 5
   pointerEventsSystem.onPointerDown(
     {
-      entity: entity2,
-      opts: { button: InputAction.IA_POINTER, hoverText: 'Dungeon Door2' }
+      entity: entity,
+      opts: { button: InputAction.IA_POINTER, hoverText: hoverText }
     },
     function () {
-      console.log('Open dungeon door 2')
-      Animator.playSingleAnimation(entity2, 'open')
-    }
-  )
-  pointerEventsSystem.onPointerDown(
-    {
-      entity: entity3,
-      opts: { button: InputAction.IA_POINTER, hoverText: 'Dungeon Door3' }
-    },
-    function () {
-      console.log('Open dungeon door 3')
-      Animator.playSingleAnimation(entity3, 'open')
-    }
-  )
-  pointerEventsSystem.onPointerDown(
-    {
-      entity: entity4,
-      opts: { button: InputAction.IA_POINTER, hoverText: 'Dungeon Door4' }
-    },
-    function () {
-      console.log('Open dungeon door 4')
-      Animator.playSingleAnimation(entity4, 'open')
-    }
-  )
-  pointerEventsSystem.onPointerDown(
-    {
-      entity: entity5,
-      opts: { button: InputAction.IA_POINTER, hoverText: 'Dungeon Door5' }
-    },
-    function () {
-      console.log('Open dungeon door 5')
-      Animator.playSingleAnimation(entity5, 'open')
+      console.log(`Special action for ${hoverText}`)
+      Animator.playSingleAnimation(entity, 'open')
     }
   )
 }
