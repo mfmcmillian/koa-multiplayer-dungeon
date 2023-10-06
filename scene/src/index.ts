@@ -1,16 +1,11 @@
-import {executeTask} from '@dcl/sdk/ecs'
-
+import { executeTask } from '@dcl/sdk/ecs'
 
 import './polyfill'
 
-import {Client} from 'colyseus.js'
-
+import { Client } from 'colyseus.js'
+import { buildDungeon, buildStartingArea } from './dungeon/buildDungeon'
 
 const ENDPOINT = 'ws://localhost:2567'
-
-
-
-
 
 export function main() {
   executeTask(async () => {
@@ -23,6 +18,6 @@ export function main() {
     }
   })
 
-
-
+  buildDungeon()
+  buildStartingArea()
 }
