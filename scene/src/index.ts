@@ -3,7 +3,7 @@ import { executeTask } from '@dcl/sdk/ecs'
 import './polyfill'
 
 import { Client } from 'colyseus.js'
-import { buildDungeon, buildStartingArea } from './dungeon/buildDungeon'
+import { buildDungeon, buildDungeonDpors, buildStartingArea } from './dungeon/buildDungeon'
 
 const ENDPOINT = 'ws://localhost:2567'
 
@@ -20,4 +20,5 @@ export function main() {
 
   buildDungeon()
   buildStartingArea()
+  buildDungeonDpors()
 }
