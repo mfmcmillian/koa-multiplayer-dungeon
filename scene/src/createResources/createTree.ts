@@ -49,7 +49,7 @@ export const createTree = async (shapeFile: string, x: number | undefined, y: nu
           isChopping = false
 
           //increase player tree inventory
-          player.inventory.incrementItem(ITEM_TYPES.TREE, 100000)
+          player.inventory.incrementItem(ITEM_TYPES.TREE, 5)
         }, 18000)
         utils.timers.setTimeout(function () {
           Animator.playSingleAnimation(tree, 'idle')

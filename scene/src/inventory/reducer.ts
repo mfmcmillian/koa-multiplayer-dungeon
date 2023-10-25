@@ -1,3 +1,5 @@
+// import axios from "axios"
+
 import { LogInventoryToServer } from '../api/api'
 import { Inventory } from './types'
 
@@ -15,7 +17,7 @@ export enum INVENTORY_ACTION_REASONS {
 type Payload = {
   type: INVENTORY_ACTIONS
   itemKey: string
-  count?: number
+  count: number
   reason?: INVENTORY_ACTION_REASONS
 }
 
@@ -24,9 +26,9 @@ export const UpdateInventory = (state: Inventory, payload: Payload): Inventory =
     count: 0
   }
 
-  console.log(`COUNT: ${payload.count}`)
+  console.log(`COUNT:${payload.count}`)
 
-  LogInventoryToServer(payload.type, payload.itemKey, 100000)
+  LogInventoryToServer(payload.type, payload.itemKey, payload.count)
     .then(() => {
       console.log('Logged information correctly')
     })
