@@ -209,7 +209,8 @@ export async function getData(url: string, headers = {}) {
 
 export const LogInventoryToServer = async (actionType: string, itemId: string, count: number) => {
   //const { userId } = await getUserData()
-  let userId = await getUserData({})
+  let userData = await getUserData({})
+  let userId = userData.data?.userId
 
   await postData(`/api/rest/item/action/${userId}`, {
     actionType,

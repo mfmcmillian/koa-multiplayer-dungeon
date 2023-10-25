@@ -5,7 +5,7 @@ import {
 import { Color4 } from '@dcl/sdk/math'
 import ReactEcs, { Button, Label, ReactEcsRenderer, UiEntity } from '@dcl/sdk/react-ecs'
 import { Cube } from './components'
-import { createCube } from './factory'
+
 
 export function setupUi() {
   ReactEcsRenderer.setUiRenderer(uiComponent)
@@ -63,7 +63,7 @@ const uiComponent = () => (
         variant='primary'
         fontSize={14}
         onMouseDown={() => {
-          createCube(1 + Math.random() * 8, Math.random() * 8, 1 + Math.random() * 8, false)
+          //createCube(1 + Math.random() * 8, Math.random() * 8, 1 + Math.random() * 8, false)
         }}
       />
      </UiEntity>

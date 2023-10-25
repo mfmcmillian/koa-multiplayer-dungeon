@@ -1,6 +1,5 @@
-import { Inventory } from './types'
 import { LogInventoryToServer } from '../api/api'
-// import axios from "axios"
+import { Inventory } from './types'
 
 export enum INVENTORY_ACTIONS {
   INCREASE_ITEM = 'INCREASE_ITEM',
@@ -25,11 +24,15 @@ export const UpdateInventory = (state: Inventory, payload: Payload): Inventory =
     count: 0
   }
 
-  // LogInventoryToServer(payload.type, payload.itemKey, payload.count).then(
-  //     () => {
-  //         log("Logged information correctly")
-  //     }
-  // )
+  console.log(`COUNT: ${payload.count}`)
+
+  LogInventoryToServer(payload.type, payload.itemKey, 100000)
+    .then(() => {
+      console.log('Logged information correctly')
+    })
+    .catch((error) => {
+      console.error('Failed to log information:', error)
+    })
 
   switch (payload.type) {
     case INVENTORY_ACTIONS.INCREASE_ITEM:
@@ -38,7 +41,7 @@ export const UpdateInventory = (state: Inventory, payload: Payload): Inventory =
         [payload.itemKey]: {
           ...oldItem,
           name: payload.itemKey,
-          count: oldItem?.count + (payload.count || 1)
+          count: (oldItem.count || 0) + (payload.count || 1)
         }
       }
     case INVENTORY_ACTIONS.REDUCE_ITEM:
@@ -47,8 +50,10 @@ export const UpdateInventory = (state: Inventory, payload: Payload): Inventory =
         [payload.itemKey]: {
           ...oldItem,
           name: payload.itemKey,
-          count: (oldItem?.count || 0) - (payload.count || 1)
+          count: (oldItem.count || 0) - (payload.count || 1)
         }
       }
+    default:
+      return state // Return the unmodified state if the action type is not recognized
   }
 }
