@@ -1,9 +1,11 @@
 import { Animator, GltfContainer, InputAction, Transform, engine, pointerEventsSystem } from '@dcl/sdk/ecs'
 import { Quaternion, Vector3 } from '@dcl/sdk/math'
 import { movePlayerTo } from '~system/RestrictedActions'
+export * from '@dcl/sdk'
+import * as utils from '@dcl-sdk/utils'
 
 //build starting area
-export function buildStartingArea() {
+export function buildStartingDungeonArea() {
   let entity = engine.addEntity()
   let entity2 = engine.addEntity()
 
@@ -130,6 +132,9 @@ function createDoorEntity(modelSrc: string, hoverText: string) {
     function () {
       console.log(`Open ${hoverText}`)
       Animator.playSingleAnimation(entity, 'open')
+      utils.timers.setTimeout(function () {
+        Animator.playSingleAnimation(entity, 'close')
+      }, 3000)
     }
   )
 }
