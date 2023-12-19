@@ -3,6 +3,8 @@ import { Quaternion, Vector3 } from '@dcl/sdk/math'
 import * as utils from '@dcl-sdk/utils'
 import { ITEM_TYPES } from '../inventory/playerInventoryMap'
 import { player } from '../player'
+import { checkWearableInUserData } from '../checkWearableData'
+import { handleItemClick } from '../ui'
 //import { player } from '../player'
 //import { refreshtimer, setRefreshTimer } from '../factory'
 
@@ -43,15 +45,34 @@ export const createTree = async (shapeFile: string, x: number | undefined, y: nu
       if (isChopping === false) {
         isChopping = true
         Animator.playSingleAnimation(tree, 'chop')
-        utils.timers.setTimeout(function () {
+        utils.timers.setTimeout(async function () {
           Animator.playSingleAnimation(tree, 'idle')
           engine.removeEntity(tree)
           isChopping = false
 
+          let gatherAmmount = 5
+          let gatherLordAmmount = 50
+
+          const isWearableFound = checkWearableInUserData(
+            //HATCHETS
+            '0xa5d8a8c3454aa003ad72c3f814e52ad6bea69e57:0'
+          )
+
+          if ((await isWearableFound) === true) {
+            console.log('wearable found')
+            gatherAmmount = 7
+          }
+
           //increase player tree inventory
-          player.inventory.incrementItem(ITEM_TYPES.TREE, 5)
+          player.inventory.incrementItem(ITEM_TYPES.TREE, gatherAmmount)
+
+          handleItemClick('tree')
+          //player.inventory.incrementLordItem(ITEM_TYPES.TREE, gatherLordAmmount)
         }, 18000)
-        utils.timers.setTimeout(function () {
+
+        utils.timers.setTimeout(async function () {
+          //check wearable
+
           Animator.playSingleAnimation(tree, 'idle')
           isChopping = false
           createTree(Items.tree, x, y, z)

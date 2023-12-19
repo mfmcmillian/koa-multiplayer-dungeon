@@ -9,6 +9,7 @@ import { createAntromTrees } from './createResources/createTree'
 import { createAntromRocks } from './createResources/createRock'
 import { createAntromBerries } from './createResources/createBerries'
 import { getUserData } from '~system/UserIdentity'
+import { setupUi } from './ui'
 
 const ENDPOINT = 'ws://localhost:2567'
 
@@ -26,13 +27,13 @@ export function main() {
   // buildDungeon()
   // buildStartingDungeonArea()
   // buildDungeonDoors()
-  buildAntrom()
-  createAntromTrees()
+  // buildAntrom()
+  // createAntromTrees()
+  // setupUi()
   // createAntromRocks()
   // createAntromBerries()
-
-  executeTask(async () => {
-    let userData = await getUserData({})
-    console.log(`MATTTTT: ${userData.data?.userId}`)
-  })
+  // executeTask(async () => {
+  //   let userData = await getUserData({})
+  //   console.log(`MATTTTT: ${userData.data?.userId}`)
+  // })
 }

@@ -1,5 +1,6 @@
 import { Inventory } from './types'
 import { INVENTORY_ACTIONS, INVENTORY_ACTION_REASONS, UpdateInventory } from './reducer'
+import { UpdateLordInventory } from '../factory'
 
 export class PlayerInventory {
   inventory: Inventory
@@ -10,6 +11,15 @@ export class PlayerInventory {
 
   incrementItem = (itemKey: string, by: number = 1, reason?: INVENTORY_ACTION_REASONS) => {
     this.inventory = UpdateInventory(this.inventory, {
+      type: INVENTORY_ACTIONS.INCREASE_ITEM,
+      itemKey,
+      count: by,
+      reason
+    })
+  }
+
+  incrementLordItem = (itemKey: string, by: number = 1, reason?: INVENTORY_ACTION_REASONS) => {
+    this.inventory = UpdateLordInventory(this.inventory, {
       type: INVENTORY_ACTIONS.INCREASE_ITEM,
       itemKey,
       count: by,

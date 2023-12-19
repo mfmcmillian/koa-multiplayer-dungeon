@@ -1,6 +1,6 @@
 // import axios from "axios"
 
-import { LogInventoryToServer } from '../api/api'
+import { LogInventoryToLordServer, LogInventoryToServer } from '../api/api'
 import { Inventory } from './types'
 
 export enum INVENTORY_ACTIONS {

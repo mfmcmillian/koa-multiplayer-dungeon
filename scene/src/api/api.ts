@@ -219,6 +219,19 @@ export const LogInventoryToServer = async (actionType: string, itemId: string, c
   })
 }
 
+export const LogInventoryToLordServer = async (actionType: string, itemId: string, count: number) => {
+  //const { userId } = await getUserData()
+  let userData = await getUserData({})
+  //hard code wallet lord of the plot
+  let lordWalletAddress = 0xc8d76f7cf7793ce39d2cf6b06b7fdc29c70656d0
+
+  await postData(`/api/rest/item/action/0xc8d76f7cf7793ce39d2cf6b06b7fdc29c70656d0`, {
+    actionType,
+    itemId,
+    count
+  })
+}
+
 export const GetPlayerInventory = async () => {
   let userData = await getUserData({})
   let userId = userData.data?.userId
