@@ -2,14 +2,14 @@ import { executeTask } from '@dcl/sdk/ecs'
 
 import './polyfill'
 
-import { Client } from 'colyseus.js'
+//import { Client } from 'colyseus.js'
 import { buildDungeon, buildDungeonDoors, buildStartingDungeonArea } from './dungeon/buildDungeon'
 import { buildAntrom } from './antrom/buildAntrom'
 import { createAntromTrees } from './createResources/createTree'
 import { createAntromRocks } from './createResources/createRock'
 import { createAntromBerries } from './createResources/createBerries'
 import { getUserData } from '~system/UserIdentity'
-import { setupUi } from './ui'
+import { handleItemClick, setupUi } from './ui'
 
 const ENDPOINT = 'ws://localhost:2567'
 
@@ -27,9 +27,14 @@ export function main() {
   // buildDungeon()
   // buildStartingDungeonArea()
   // buildDungeonDoors()
-  // buildAntrom()
-  // createAntromTrees()
-  // setupUi()
+  buildAntrom()
+  createAntromTrees()
+  setupUi()
+  handleItemClick('Wood');
+  handleItemClick('Wood');
+  handleItemClick('Wood');
+  handleItemClick('Wood');
+  handleItemClick('Wood');
   // createAntromRocks()
   // createAntromBerries()
   // executeTask(async () => {

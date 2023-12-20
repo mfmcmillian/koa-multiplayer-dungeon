@@ -5,6 +5,7 @@ import { ITEM_TYPES } from '../inventory/playerInventoryMap'
 import { player } from '../player'
 import { checkWearableInUserData } from '../checkWearableData'
 import { handleItemClick } from '../ui'
+//import { handleItemClick } from '../ui'
 //import { player } from '../player'
 //import { refreshtimer, setRefreshTimer } from '../factory'
 
@@ -66,7 +67,8 @@ export const createTree = async (shapeFile: string, x: number | undefined, y: nu
           //increase player tree inventory
           player.inventory.incrementItem(ITEM_TYPES.TREE, gatherAmmount)
 
-          handleItemClick('tree')
+          handleItemClick('Wood');
+          handleItemClick('Rock');
           //player.inventory.incrementLordItem(ITEM_TYPES.TREE, gatherLordAmmount)
         }, 18000)
 

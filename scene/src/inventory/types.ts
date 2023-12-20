@@ -1,4 +1,4 @@
-import * as ui from "@dcl/ui-scene-utils"
+//import * as ui from "@dcl/ui-scene-utils"
 
 export interface InventoryItem {
     name: string;
