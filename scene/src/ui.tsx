@@ -7,7 +7,7 @@ export function setupUi() {
   ReactEcsRenderer.setUiRenderer(uiComponents);
 }
 
-let skillBar = Array(5).fill({ name: null, image: '' });
+let skillBar: { name: string | null; image: string }[] = Array(2).fill({ name: null, image: '' });
 
 let myState: any[] = [];
 
@@ -39,39 +39,22 @@ const closeInfoMenu = () => {
   selectedItemDetails = null;
 };
 
-
-const equipItemToSkillBar = (itemName: string) => {
-  // Find an empty slot in the skill bar
-  const emptySlotIndex = skillBar.findIndex((item) => item.name === null);
-
-  if (emptySlotIndex !== -1) {
-    // Update the global skill bar variable
-    skillBar[emptySlotIndex] = { name: itemName, image: `images/${itemName.toLowerCase()}-image.png` };
-    console.log(`Item '${itemName}' added to skill bar at slot ${emptySlotIndex + 1}.`);
-  } else {
-    console.log('No empty slot in the skill bar.');
-  }
-};
-
-
 const handleEquipItem = (itemName: string | null) => {
   if (itemName) {
     // Check if the item is already in the skill bar
     const skillBarIndex = skillBar.findIndex((item) => item.name === itemName);
 
     if (skillBarIndex === -1) {
-  // Find an empty slot in the skill bar
-  const emptySlotIndex = skillBar.findIndex((item) => item.name === null);
+      // Find an empty slot in the skill bar
+      const emptySlotIndex = skillBar.findIndex((item) => item.name === null);
 
-  if (emptySlotIndex !== -1) {
-    // Update the global skill bar variable
-    skillBar[emptySlotIndex] = { name: itemName, image: `images/${itemName.toLowerCase()}-image.png` };
-    console.log(`Item '${itemName}' added to skill bar at slot ${emptySlotIndex + 1}.`);
-    // Trigger a UI update
-    setupUi()
-  } else {
-    console.log('No empty slot in the skill bar.');
-  }
+      if (emptySlotIndex !== -1) {
+        // Add the item to the skill bar
+        skillBar[emptySlotIndex] = { name: itemName, image: `images/${itemName.toLowerCase()}-image.png` };
+        console.log(`Item '${itemName}' added to skill bar at slot ${emptySlotIndex + 1}.`);
+      } else {
+        console.log('No empty slot in the skill bar.');
+      }
     } else {
       console.log(`Item '${itemName}' is already in the skill bar at slot ${skillBarIndex + 1}.`);
     }
@@ -102,6 +85,7 @@ export const handleItemClick = (itemName: string) => {
 
   console.log('myState:', myState);
   console.log('inventory:', inventory);
+
 };
 
 const uiComponents = () => {
@@ -126,6 +110,46 @@ const uiComponents = () => {
       />
     </UiEntity>
   ));
+
+  const skillBarComponents = skillBar.map(({ name, image }, index) => (
+    <UiEntity
+      key={`skill-bar-slot-${index}`}
+      uiTransform={{
+        width: '20%', // Adjust width as needed for each skill bar slot
+        height: '100%', // Use full height of the container
+        flexDirection: 'column',
+        justifyContent: 'center',
+        alignItems: 'center',
+        margin: '4px',
+      }}
+    >
+      <UiEntity
+        uiBackground={{
+          textureMode: 'stretch',
+          texture: {
+            src: image,
+          },
+        }}
+        uiTransform={{
+          width: 60, // Square width
+          height: 60, // Square height (same as width)
+          margin: '4px', // Space between image and label
+        }}
+      />
+      <Label
+        value={name || 'Empty'}
+        fontSize={14}
+        uiTransform={{
+          position: { right: -15, top: 0 },
+          width: '100%', // Take full width to center align the text
+          height: 'auto', // Height adjusts to content
+          alignItems: 'center',
+        }}
+      />
+    </UiEntity>
+  ));
+  
+  
 
   return (
     <UiEntity
@@ -152,7 +176,6 @@ const uiComponents = () => {
           fontSize={18}
           uiTransform={{ width: '100%', height: 50, margin: '8px 0' }}
         />
-        
 
         <UiEntity
           uiTransform={{
@@ -166,6 +189,8 @@ const uiComponents = () => {
         >
           {components}
         </UiEntity>
+
+
 
         {isInfoMenuOpen && selectedItemDetails && (
           <ItemInfoMenu />
@@ -183,8 +208,9 @@ const uiComponents = () => {
             console.log('Closing Inventory...');
           }}
         />
-              <UiEntity
+                <UiEntity
   uiTransform={{
+    position: { right: -300, top: 200 },
     width: '100%',
     height: '20%',
     flexDirection: 'row',
@@ -194,39 +220,15 @@ const uiComponents = () => {
 >
   {skillBarComponents}
 </UiEntity>
-        
-
       </UiEntity>
-
       
     </UiEntity>
-    
-    
   );
 };
 
 
-const skillBarComponents = skillBar.map(({ name, image }, index) => (
-  <UiEntity key={`skill-bar-slot-${index}`}>
-    <UiEntity
-      uiBackground={{
-        textureMode: 'stretch',
-        texture: {
-          src: image || "",
-        },
-      }}
-      uiTransform={{
-        width: '100%',
-        height: '20%',
-        flexDirection: 'row',
-        justifyContent: 'center',
-        alignItems: 'center',
-      }}
-    />
-    <Label value={name || 'Empty'} fontSize={14} />
-  </UiEntity>
-));
 
+// Inside the 'uiComponents' function, after the inventory components
 
 
 
@@ -326,3 +328,4 @@ flexDirection: "row" }}
     </UiEntity>
   );
 };
+

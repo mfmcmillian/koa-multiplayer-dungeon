@@ -31,10 +31,10 @@ export function main() {
   createAntromTrees()
   setupUi()
   handleItemClick('Wood');
-  handleItemClick('Wood');
-  handleItemClick('Wood');
-  handleItemClick('Wood');
-  handleItemClick('Wood');
+  handleItemClick('Rock');
+  handleItemClick('Tree');
+  handleItemClick('Bee');
+  handleItemClick('See');
   // createAntromRocks()
   // createAntromBerries()
   // executeTask(async () => {
