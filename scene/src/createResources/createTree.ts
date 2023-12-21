@@ -67,8 +67,8 @@ export const createTree = async (shapeFile: string, x: number | undefined, y: nu
           //increase player tree inventory
           player.inventory.incrementItem(ITEM_TYPES.TREE, gatherAmmount)
 
-          handleItemClick('Wood');
-          handleItemClick('Rock');
+          // handleItemClick('Wood');
+          // handleItemClick('Rock');
           //player.inventory.incrementLordItem(ITEM_TYPES.TREE, gatherLordAmmount)
         }, 18000)
 

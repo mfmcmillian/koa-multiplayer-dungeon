@@ -30,11 +30,11 @@ export function main() {
   buildAntrom()
   createAntromTrees()
   setupUi()
-  handleItemClick('Wood');
-  handleItemClick('Rock');
-  handleItemClick('Tree');
-  handleItemClick('Bee');
-  handleItemClick('See');
+  handleItemClick('1', 1,2,3);
+  handleItemClick('2', 1,2,3);
+  handleItemClick('3', 1,2,3);
+  handleItemClick('4', 1,2,3);
+  handleItemClick('5', 1,2,3);
   // createAntromRocks()
   // createAntromBerries()
   // executeTask(async () => {
