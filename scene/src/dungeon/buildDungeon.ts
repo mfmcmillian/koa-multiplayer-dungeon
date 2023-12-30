@@ -1,8 +1,10 @@
-import { Animator, GltfContainer, InputAction, Transform, engine, pointerEventsSystem } from '@dcl/sdk/ecs'
-import { Quaternion, Vector3 } from '@dcl/sdk/math'
-import { movePlayerTo } from '~system/RestrictedActions'
-export * from '@dcl/sdk'
+import {Animator, engine, Entity, GltfContainer, InputAction, pointerEventsSystem, Transform} from '@dcl/sdk/ecs'
+import {Quaternion, Vector3} from '@dcl/sdk/math'
+import {movePlayerTo} from '~system/RestrictedActions'
+import {EventSystemCallback} from "@dcl/ecs/dist/systems/events";
 import * as utils from '@dcl-sdk/utils'
+
+export * from '@dcl/sdk'
 
 //build starting area
 export function buildStartingDungeonArea() {
@@ -105,31 +107,8 @@ export function buildDungeonDoors() {
 
 function createDoorEntity(modelSrc: string, hoverText: string) {
   const entity = engine.addEntity()
-
-  GltfContainer.create(entity, {
-    src: modelSrc
-  })
-
-  Transform.create(entity, {
-    position: Vector3.create(16, 50, 16),
-    rotation: Quaternion.create(0, -1, 0, 1),
-    scale: Vector3.create(1, 1, 1)
-  })
-
-  Animator.create(entity, {
-    states: [
-      { clip: 'open', playing: false, loop: false },
-      { clip: 'close', playing: false, loop: false },
-      { clip: 'idle', playing: true, loop: false }
-    ]
-  })
-
-  pointerEventsSystem.onPointerDown(
-    {
-      entity: entity,
-      opts: { button: InputAction.IA_POINTER, hoverText: hoverText }
-    },
-    function () {
+  createDoorWithAction(entity, modelSrc, hoverText,
+    function (event) {
       console.log(`Open ${hoverText}`)
       Animator.playSingleAnimation(entity, 'open')
       utils.timers.setTimeout(function () {
@@ -141,7 +120,15 @@ function createDoorEntity(modelSrc: string, hoverText: string) {
 
 function createBossDoorEntity(modelSrc: string, hoverText: string) {
   const entity = engine.addEntity()
+  createDoorWithAction(entity, modelSrc, hoverText,
+      function (event) {
+        console.log(`Special action for ${hoverText}`)
+        Animator.playSingleAnimation(entity, 'open')
+      }
+  )
+}
 
+function createDoorWithAction(entity:Entity, modelSrc: string, hoverText: string, action:EventSystemCallback) {
   GltfContainer.create(entity, {
     src: modelSrc
   })
@@ -160,15 +147,11 @@ function createBossDoorEntity(modelSrc: string, hoverText: string) {
     ]
   })
 
-  // Different behavior for Door 5
   pointerEventsSystem.onPointerDown(
-    {
-      entity: entity,
-      opts: { button: InputAction.IA_POINTER, hoverText: hoverText }
-    },
-    function () {
-      console.log(`Special action for ${hoverText}`)
-      Animator.playSingleAnimation(entity, 'open')
-    }
+      {
+        entity: entity,
+        opts: { button: InputAction.IA_POINTER, hoverText: hoverText }
+      },
+      action
   )
 }

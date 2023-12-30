@@ -9,7 +9,8 @@ import { createAntromTrees } from './createResources/createTree'
 import { createAntromRocks } from './createResources/createRock'
 import { createAntromBerries } from './createResources/createBerries'
 import { getUserData } from '~system/UserIdentity'
-import { handleItemClick, setupUi } from './ui'
+import {setupUi} from "./ui/root.ui";
+import {handleItemClick} from "./ui/inventory/inventory.ui";
 
 const ENDPOINT = 'ws://localhost:2567'
 
